@@ -14,10 +14,22 @@ import {
 import { GoogleAction } from './core/GoogleAction';
 import { AskOutput, Handler, TellOutput } from 'jovo-core';
 import { MediaResponse } from './modules/MediaResponse';
+import { Transaction, PaymentOptions, OrderUpdate, OrderOptions } from './modules/Transaction';
+import { SkuId } from './modules/Transaction';
+import { PaymentParameters, PresentationOptions } from './modules/Transaction';
+export {
+  Transaction,
+  RequirementsCheckResult,
+  SupportedCardNetworks,
+  PaymentOptions,
+  OrderOptions,
+  GoogleProvidedOptions,
+  OrderUpdate,
+} from './modules/Transaction';
 export { GoogleAssistant, Config } from './GoogleAssistant';
 export { GoogleAssistantTestSuite, Suggestion, Expected } from './core/Interfaces';
 import { NextScene } from './core/Interfaces';
-import { Prompt } from './core/Interfaces';
+import { Order, OrderUpdateV3, Prompt } from './core/Interfaces';
 export * from './core/Interfaces';
 export * from './services/PushNotificationsApi';
 export * from './visuals/BasicCard';
@@ -95,6 +107,40 @@ declare module 'jovo-core/dist/src/Interfaces' {
         reprompts?: Prompt[];
       };
       expected?: Expected;
+
+      AskForDeliveryAddress?: {
+        reason: string;
+      };
+
+      TransactionDecision?: {
+        orderOptions?: OrderOptions;
+        paymentOptions: PaymentOptions;
+        proposedOrder: any; // tslint:disable-line
+      };
+
+      TransactionRequirementsCheck?: {};
+
+      TransactionDigitalPurchaseRequirementsCheck?: {};
+
+      TransactionOrder?: {
+        order: Order;
+        presentationOptions?: PresentationOptions;
+        orderOptions?: OrderOptions;
+        paymentParameters?: PaymentParameters;
+      };
+
+      TransactionOrderUpdate?: {
+        orderUpdate: OrderUpdateV3;
+      };
+
+      OrderUpdate?: {
+        orderUpdate: OrderUpdate;
+        speech: string;
+      };
+
+      CompletePurchase?: {
+        skuId: SkuId;
+      };
     };
   }
 }
@@ -112,5 +158,11 @@ declare module './core/GoogleAction' {
 
     audioPlayer(): MediaResponse | undefined;
     mediaResponse(): MediaResponse | undefined;
+  }
+}
+
+declare module './core/GoogleAction' {
+  interface GoogleAction {
+    $transaction?: Transaction;
   }
 }

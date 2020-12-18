@@ -312,7 +312,7 @@ export interface Prompt {
   suggestions?: Suggestion[];
   link?: Link;
   canvas?: Canvas;
-  orderUpdate?: OrderUpdate;
+  orderUpdate?: OrderUpdateV3;
 }
 
 export interface Slot {
@@ -419,11 +419,10 @@ export interface Context {
   media: MediaContext;
 }
 
-export interface OrderUpdate {
+export interface OrderUpdateV3 {
   type?: string;
   reason?: string;
   order: Order;
-  updateMask: string;
   userNotification?: UserNotification;
 }
 export interface UserNotification {
@@ -454,6 +453,11 @@ export interface Order {
   purchase?: PurchaseOrderExtension;
   ticket?: TicketOrderExtension;
 }
+
+export interface Reservation extends Order {}
+
+export interface ReservationUpdate extends OrderUpdateV3 {}
+
 export interface TicketOrderExtension {
   ticketEvent: TicketEvent;
 }
@@ -504,6 +508,13 @@ export interface PhoneNumber {
   extension: string;
   preferredDomesticCarrierCode: string;
 }
+
+export interface OrderUpdateV3 {
+  type?: string;
+  reason?: string;
+  order: Order;
+}
+
 export interface UserInfo {
   email: string;
   firstName: string;
